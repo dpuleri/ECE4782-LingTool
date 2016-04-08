@@ -31,7 +31,7 @@ function struct_obj = read_audio_files(directory)
         fileName = fileList(ind).name;
         day = fileName(1:5);
         timeOfDay = fileName(7);
-        isNoisy = strcmp(fileName(9), 'N');
+        isNoisy = strcmp(fileName(9), 'N') || strcmp(fileName(9), 'L');
         
         % now get the audio
         [audio, Fs] = audioread([directory '/' fileName]);
