@@ -15,7 +15,7 @@ function struct_obj = read_audio_files(directory)
     fileList = fileList(~[fileList.isdir]);
     
     % ignore files that are not audio files
-    PAT = '\d{2}-\d{2}-\w-\w.[mp3|m4u]'; % regex pattern to match to
+    PAT = '\d{2}[-|_]\d{2}[-|_]\w[-|_]\w.[mp3|m4u]'; % regex pattern to match to
     i = 1;
     while i <= length(fileList)
         if isempty(regexp(fileList(i).name, PAT, 'ONCE'))
