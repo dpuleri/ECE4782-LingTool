@@ -5,25 +5,33 @@ function features = gather_features(st, word_indices)
 % Also requires the indices of the start of the 4 words
 % 
 % (01) -> RMS of whole sig
-% (02) -> RMS of 1st word
-% (03) -> length of 1st word
-% (04) -> max freq of 1st word
-% (05) -> RMS of 2ns word
-% (06) -> length of 2nd word
-% (07) -> max freq of 2ns word
-% (08) -> RMS of 3rd word
-% (09) -> length of 3rd word
-% (10) -> max freq of 3rd word
-% (11) -> RMS of 4th word
-% (12) -> length of 4th word
-% (13) -> max freq of 4th word
+% (02) -> Whether or not the audio is noisy
+% (03) -> RMS of 1st word
+% (04) -> length of 1st word
+% (05) -> max freq of 1st word
+% (06) -> RMS of 2ns word
+% (07) -> length of 2nd word
+% (08) -> max freq of 2ns word
+% (09) -> RMS of 3rd word
+% (10) -> length of 3rd word
+% (11) -> max freq of 3rd word
+% (12) -> RMS of 4th word
+% (13) -> length of 4th word
+% (14) -> max freq of 4th word
 
-features = zeros(length(st), 13); % 13 so far...
+features = zeros(length(st), 14); % 14 so far...
 for i = 1:length(st)
     features(i,1) = sqrt(sum(st(i).audioFilt.^2)); % RMS of whole sig
     
+    % whether or not it is noisy
+    if st(i).isNoisy
+        features(i,2) = 1;
+    else
+        features(i,2) = 0;
+    end
+    
     % loop through each word... fft(signal)
-    feat_ind = 2;
+    feat_ind = 3;
     for j = 1:length(word_indices(i, :)) % should be 4
         if j <4
             RMS_cur_word = sqrt(sum(st(i).audioFilt(word_indices(i,j):word_indices(i,j+1)).^2));
