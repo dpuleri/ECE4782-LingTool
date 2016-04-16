@@ -21,7 +21,7 @@ function features = gather_features(st, word_indices)
 
 features = zeros(length(st), 14); % 14 so far...
 for i = 1:length(st)
-    features(i,1) = sqrt(sum(st(i).audioFilt.^2)); % RMS of whole sig
+    features(i,1) = rms(st(i).audioFilt); % RMS of whole sig
     
     % whether or not it is noisy
     if st(i).isNoisy
@@ -34,11 +34,11 @@ for i = 1:length(st)
     feat_ind = 3;
     for j = 1:length(word_indices(i, :)) % should be 4
         if j <4
-            RMS_cur_word = sqrt(sum(st(i).audioFilt(word_indices(i,j):word_indices(i,j+1)).^2));
+            RMS_cur_word = rms(st(i).audioFilt(word_indices(i,j):word_indices(i,j+1)));
             len_cur_word = (word_indices(i,j+1) - word_indices(i,j)) .* (st(i).Fs .^ -1); % in sec
             [~, freq_cur_word] = max(fft(st(i).audioFilt(word_indices(i,j):word_indices(i,j+1)))); % not exactly freq, but doesn't matter
         else
-            RMS_cur_word = sqrt(sum(st(i).audioFilt(word_indices(i,j):end).^2));
+            RMS_cur_word = rms(st(i).audioFilt(word_indices(i,j):end));
             len_cur_word = (length(st(i).audioFilt) - word_indices(i,j)) .* (st(i).Fs .^ -1); % in sec
             [~, freq_cur_word] = max(fft(st(i).audioFilt(word_indices(i,j):end))); % not exactly freq, but doesn't matter
         end
